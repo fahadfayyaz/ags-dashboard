@@ -3,7 +3,7 @@ import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import Dotdotdot from "react-dotdotdot";
 import classNames from "classnames";
-
+import moment from "moment";
 import CheckIcon from "mdi-react/CheckIcon";
 import PaperclipIcon from "mdi-react/PaperclipIcon";
 import StarIcon from "mdi-react/StarIcon";
@@ -41,6 +41,7 @@ export default class EmailListItem extends PureComponent {
   componentDidMount() {
     console.log("mounted");
     db.collection("contacts")
+      .orderBy("createdAt", "desc")
       .get()
       .then((snapshot) => {
         const contacts = [];
@@ -52,6 +53,7 @@ export default class EmailListItem extends PureComponent {
       })
       .catch((error) => console.log(error));
   }
+
   onFavorite = (e) => {
     e.preventDefault();
     this.setState((prevState) => ({ favorite: !prevState.favorite }));
@@ -119,14 +121,8 @@ export default class EmailListItem extends PureComponent {
               </Dotdotdot>
             </td>
             <td onClick={onLetter}>{email.attach ? <PaperclipIcon /> : ""}</td>
-            <td
-              onClick={(contact) => {
-                console.log(contact);
-                this.userId(contact);
-              }}
-              className="inbox__email-table-date"
-            >
-              {contact.createdAt.toDate().toString()}
+            <td onClick={onLetter} className="inbox__email-table-date">
+              {moment(contact.createdAt.toDate()).calendar()}
             </td>
           </tr>
         );
