@@ -35,6 +35,7 @@ export default class EmailListItem extends PureComponent {
     this.state = {
       favorite: false,
       isChecked: false,
+      id: "",
     };
   }
   componentDidMount() {
@@ -60,7 +61,10 @@ export default class EmailListItem extends PureComponent {
     const { isChecked } = this.state;
     this.setState({ isChecked: !isChecked });
   };
-
+  userId = (contact) => {
+    console.log(contact);
+    //this.setState({ id });
+  };
   render() {
     const { email, onLetter, itemId } = this.props;
     const { favorite, isChecked } = this.state;
@@ -68,13 +72,22 @@ export default class EmailListItem extends PureComponent {
       "inbox__email-list-item": true,
       "inbox__email-list-item--unread": email.unread,
     });
+    console.log("iddd", this.state.id);
 
     return !this.state.contacts ? (
       <div />
     ) : (
       this.state.contacts.map((contact) => {
         return (
-          <tr className={itemClass}>
+          <tr
+            className={itemClass}
+            //style={{ backgroundColor: "red" }}
+            onclick={(contact) => {
+              //  ev.stopropagation();
+              console.log(contact);
+              this.userId(contact);
+            }}
+          >
             <td>
               <label
                 htmlFor={contact.id}
@@ -106,8 +119,14 @@ export default class EmailListItem extends PureComponent {
               </Dotdotdot>
             </td>
             <td onClick={onLetter}>{email.attach ? <PaperclipIcon /> : ""}</td>
-            <td onClick={onLetter} className="inbox__email-table-date">
-              {/* {contact.createdAt.toDate()} */}
+            <td
+              onClick={(contact) => {
+                console.log(contact);
+                this.userId(contact);
+              }}
+              className="inbox__email-table-date"
+            >
+              {contact.createdAt.toDate().toString()}
             </td>
           </tr>
         );

@@ -1,7 +1,7 @@
-import React from 'react';
-import { Card, Col, CardBody } from 'reactstrap';
-import Inbox from './Inbox';
-import emails from './email-list';
+import React from "react";
+import { Card, Col, CardBody } from "reactstrap";
+import Inbox from "./Inbox";
+import emails from "./email-list";
 
 const InboxCard = () => (
   <Col md={12} lg={12}>
