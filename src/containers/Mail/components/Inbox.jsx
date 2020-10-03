@@ -17,17 +17,17 @@ import { EmailsProps } from "../../../shared/prop-types/EmailProps";
 
 const mailboxes = [
   { icon: <InboxArrowDownIcon />, title: "Inbox", amount: 21 },
-  { icon: <EmailIcon />, title: "Sent Mail" },
-  { icon: <TooltipEditIcon />, title: "Drafts", amount: 2 },
-  { icon: <StarIcon />, title: "Tagged" },
-  { icon: <DeleteIcon />, title: "Deleted" },
+  // { icon: <EmailIcon />, title: "Sent Mail" },
+  // { icon: <TooltipEditIcon />, title: "Drafts", amount: 2 },
+  // { icon: <StarIcon />, title: "Tagged" },
+  // { icon: <DeleteIcon />, title: "Deleted" },
 ];
 
 const labels = [
-  { color: "green", title: "Freelance" },
-  { color: "red", title: "Work" },
-  { color: "blue", title: "Travel" },
-  { color: "yellow", title: "Clients" },
+  // { color: "green", title: "Freelance" },
+  // { color: "red", title: "Work" },
+  // { color: "blue", title: "Travel" },
+  // { color: "yellow", title: "Clients" },
 ];
 
 const emailExample = [
@@ -132,7 +132,7 @@ export default class Inbox extends PureComponent {
             onClick={this.onCompose}
           >
             <PenIcon />
-            Compose
+            ADD JOB ROLES
           </Button>
           {mailboxes.map((m, i) => (
             <button
