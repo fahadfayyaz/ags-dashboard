@@ -75,7 +75,6 @@ export default class EmailListItem extends PureComponent {
       "inbox__email-list-item--unread": email.unread,
     });
     console.log("iddd", this.state.id);
-
     return !this.state.contacts ? (
       <div />
     ) : (
@@ -121,7 +120,13 @@ export default class EmailListItem extends PureComponent {
               </Dotdotdot>
             </td>
             <td onClick={onLetter}>{email.attach ? <PaperclipIcon /> : ""}</td>
-            <td onClick={onLetter} className="inbox__email-table-date">
+            <td
+              onClick={() => {
+                console.log(contact.id);
+                //this.userId(contact);
+              }}
+              className="inbox__email-table-date"
+            >
               {moment(contact.createdAt.toDate()).calendar()}
             </td>
           </tr>
