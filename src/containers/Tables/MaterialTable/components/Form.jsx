@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Field, reduxForm } from "redux-form";
 import { Button, ButtonToolbar } from "reactstrap";
 import PropTypes from "prop-types";
-import TextEditor from "../../../shared/components/text-editor/TextEditor";
-import firebase, { db, auth } from "../../../config/firebase";
+import TextEditor from "../../../../shared/components/text-editor/TextEditor";
+import firebase, { db, auth } from "../../../../config/firebase";
 // import ReactQuill from "react-quill";
 const renderTextEditor = ({ input }) => <TextEditor {...input} />;
 
@@ -11,7 +11,7 @@ renderTextEditor.propTypes = {
   input: PropTypes.shape().isRequired,
 };
 
-const ComposeEmail = () => {
+const Form = () => {
   const [content, setContent] = useState("");
   const [location, setLocation] = useState("");
   const [position, setPosition] = useState("");
@@ -44,7 +44,7 @@ const ComposeEmail = () => {
     setType("");
   };
   return (
-    <>
+    <div style={{ backgroundColor: "white" }}>
       <form className="form inbox__content" onSubmit={handleSubmit}>
         <h5 className="inbox__compose-title bold-text">Compose new message</h5>
         <div className="form__form-group">
@@ -120,14 +120,14 @@ const ComposeEmail = () => {
           <Button type="submit">Cancel</Button>
         </ButtonToolbar>
       </form>
-    </>
+    </div>
   );
 };
-ComposeEmail.propTypes = {
+Form.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
 };
 
 export default reduxForm({
   form: "compose_email_form", // a unique identifier for this form
-})(ComposeEmail);
+})(Form);

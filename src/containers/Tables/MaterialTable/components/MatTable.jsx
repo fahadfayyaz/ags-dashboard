@@ -1,25 +1,33 @@
-import React, { PureComponent } from 'react';
-import { Card, CardBody, Col } from 'reactstrap';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
-import Checkbox from '@material-ui/core/Checkbox';
-import MatTableHead from './MatTableHead';
-import MatTableToolbar from './MatTableToolbar';
+import React, { PureComponent } from "react";
+import { Card, CardBody, Col, ButtonToolbar } from "reactstrap";
+import { Link } from "react-router-dom";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TablePagination from "@material-ui/core/TablePagination";
+import TableRow from "@material-ui/core/TableRow";
+import Checkbox from "@material-ui/core/Checkbox";
+import MatTableHead from "./MatTableHead";
+import MatTableToolbar from "./MatTableToolbar";
+import { db } from "../../../../config/firebase";
+import Form from "./Form";
 
-let counter = 0;
-
-function createData(name, calories, fat, carbs, protein) {
-  counter += 1;
-  return {
-    id: counter, name, calories, fat, carbs, protein,
-  };
-}
+//function createData(name, calories, fat, carbs, protein) {
+//  counter += 1;
+//  return {
+//    id: counter,
+//    name,
+//    calories,
+//    fat,
+//    carbs,
+//    protein,
+//  };
+//}
 
 function getSorting(order, orderBy) {
-  if (order === 'desc') {
+  if (order === "desc") {
     return (a, b) => {
       if (a[orderBy] < b[orderBy]) {
         return -1;
@@ -43,34 +51,53 @@ function getSorting(order, orderBy) {
 
 export default class MatTable extends PureComponent {
   state = {
-    order: 'asc',
-    orderBy: 'calories',
+    order: "asc",
+    orderBy: "calories",
+    key: "",
     selected: new Map([]),
     data: [
-      createData('Cupcake', 305, 3.7, 67, 4.3),
-      createData('Donut', 452, 25.0, 51, 4.9),
-      createData('Eclair', 262, 16.0, 24, 6.0),
-      createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-      createData('Gingerbread', 356, 16.0, 49, 3.9),
-      createData('Honeycomb', 408, 3.2, 87, 6.5),
-      createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-      createData('Jelly Bean', 375, 0.0, 94, 0.0),
-      createData('KitKat', 518, 26.0, 65, 7.0),
-      createData('Lollipop', 392, 0.2, 98, 0.0),
-      createData('Marshmallow', 318, 0, 81, 2.0),
-      createData('Nougat', 360, 19.0, 9, 37.0),
-      createData('Oreo', 437, 18.0, 63, 4.0),
+      //  createData("Cupcake", 305, 3.7, 67, 4.3),
+      //  createData("Donut", 452, 25.0, 51, 4.9),
+      //  createData("Eclair", 262, 16.0, 24, 6.0),
+      //  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
+      //  createData("Gingerbread", 356, 16.0, 49, 3.9),
+      //  createData("Honeycomb", 408, 3.2, 87, 6.5),
+      //  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
+      //  createData("Jelly Bean", 375, 0.0, 94, 0.0),
+      //  createData("ftafat", 518, 26.0, 65, 7.0),
+      //  createData("Lollipop", 392, 0.2, 98, 0.0),
+      //  createData("Marshmallow", 318, 0, 81, 2.0),
+      //  createData("Nougat", 360, 19.0, 9, 37.0),
+      //  createData("Oreo", 437, 18.0, 63, 4.0),
     ],
     page: 0,
     rowsPerPage: 5,
   };
 
+  componentDidMount() {
+    console.log("mounted");
+    db.collection("roles")
+      .get()
+      .then((snapshot) => {
+        const roles = [];
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          roles.push({ ...data, id: doc.id });
+        });
+        this.setState({ data: roles, loading: false });
+        console.log(this.state.data);
+      })
+      .catch((error) => console.log(error));
+  }
+
   handleRequestSort = (event, property) => {
     const orderBy = property;
-    let order = 'desc';
+    let order = "desc";
     const { orderBy: stateOrderBy, order: stateOrder } = this.state;
 
-    if (stateOrderBy === property && stateOrder === 'desc') { order = 'asc'; }
+    if (stateOrderBy === property && stateOrder === "desc") {
+      order = "asc";
+    }
 
     this.setState({ order, orderBy });
   };
@@ -79,7 +106,7 @@ export default class MatTable extends PureComponent {
     if (checked) {
       const { data } = this.state;
       const newSelected = new Map();
-      data.map(n => newSelected.set(n.id, true));
+      data.map((n) => newSelected.set(n.id, true));
       this.setState({ selected: newSelected });
       return;
     }
@@ -111,8 +138,8 @@ export default class MatTable extends PureComponent {
     let copyData = [...data];
     const { selected } = this.state;
 
-    for (let i = 0; i < [...selected].filter(el => el[1]).length; i += 1) {
-      copyData = copyData.filter(obj => obj.id !== selected[i]);
+    for (let i = 0; i < [...selected].filter((el) => el[1]).length; i += 1) {
+      copyData = copyData.filter((obj) => obj.id !== selected[i]);
     }
 
     this.setState({ data: copyData, selected: new Map([]) });
@@ -123,11 +150,24 @@ export default class MatTable extends PureComponent {
     return !!selected.get(id);
   };
 
+  delete(id) {
+    db.collection("roles")
+      .doc(id)
+      .delete()
+      .then(() => {
+        console.log("Document successfully deleted!");
+        this.props.history.push("/");
+      })
+      .catch((error) => {
+        console.error("Error removing document: ", error);
+      });
+  }
+
   render() {
-    const {
-      data, order, orderBy, selected, rowsPerPage, page,
-    } = this.state;
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - (page * rowsPerPage));
+    const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
+    const emptyRows =
+      rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+    console.log("render data ", data);
 
     return (
       <Col md={12} lg={12}>
@@ -137,14 +177,14 @@ export default class MatTable extends PureComponent {
               <h5 className="bold-text">Material table</h5>
             </div>
             <MatTableToolbar
-              numSelected={[...selected].filter(el => el[1]).length}
+              numSelected={[...selected].filter((el) => el[1]).length}
               handleDeleteSelected={this.handleDeleteSelected}
               onRequestSort={this.handleRequestSort}
             />
             <div className="material-table__wrap">
               <Table className="material-table">
                 <MatTableHead
-                  numSelected={[...selected].filter(el => el[1]).length}
+                  numSelected={[...selected].filter((el) => el[1]).length}
                   order={order}
                   orderBy={orderBy}
                   onSelectAllClick={this.handleSelectAllClick}
@@ -154,21 +194,27 @@ export default class MatTable extends PureComponent {
                 <TableBody>
                   {data
                     .sort(getSorting(order, orderBy))
-                    .slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage)
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((d) => {
                       const isSelected = this.isSelected(d.id);
                       return (
                         <TableRow
                           className="material-table__row"
                           role="checkbox"
-                          onClick={event => this.handleClick(event, d.id)}
+                          onClick={(event) => this.handleClick(event, d.id)}
                           aria-checked={isSelected}
                           tabIndex={-1}
                           key={d.id}
                           selected={isSelected}
                         >
-                          <TableCell className="material-table__cell" padding="checkbox">
-                            <Checkbox checked={isSelected} className="material-table__checkbox" />
+                          <TableCell
+                            className="material-table__cell"
+                            padding="checkbox"
+                          >
+                            <Checkbox
+                              checked={isSelected}
+                              className="material-table__checkbox"
+                            />
                           </TableCell>
                           <TableCell
                             className="material-table__cell material-table__cell-right"
@@ -176,23 +222,23 @@ export default class MatTable extends PureComponent {
                             scope="row"
                             padding="none"
                           >
-                            {d.name}
+                            {d.position}
                           </TableCell>
-                          <TableCell
-                            className="material-table__cell material-table__cell-right"
-                          >{d.calories}
+                          <TableCell className="material-table__cell material-table__cell-right">
+                            {d.type}
                           </TableCell>
-                          <TableCell
-                            className="material-table__cell material-table__cell-right"
-                          >{d.fat}
+                          <TableCell className="material-table__cell material-table__cell-right">
+                            {d.location}
                           </TableCell>
-                          <TableCell
-                            className="material-table__cell material-table__cell-right"
-                          >{d.carbs}
+                          <TableCell className="material-table__cell material-table__cell-right">
+                            <DeleteIcon
+                              onClick={this.delete.bind(this, d.id)}
+                            />
                           </TableCell>
-                          <TableCell
-                            className="material-table__cell material-table__cell-right"
-                          >{d.protein}
+                          <TableCell className="material-table__cell material-table__cell-right">
+                            <Link to="/Form">
+                              <EditIcon />
+                            </Link>
                           </TableCell>
                         </TableRow>
                       );
@@ -211,14 +257,14 @@ export default class MatTable extends PureComponent {
               count={data.length}
               rowsPerPage={rowsPerPage}
               page={page}
-              backIconButtonProps={{ 'aria-label': 'Previous Page' }}
-              nextIconButtonProps={{ 'aria-label': 'Next Page' }}
+              backIconButtonProps={{ "aria-label": "Previous Page" }}
+              nextIconButtonProps={{ "aria-label": "Next Page" }}
               onChangePage={this.handleChangePage}
               onChangeRowsPerPage={this.handleChangeRowsPerPage}
               rowsPerPageOptions={[5, 10, 15]}
               dir="ltr"
               SelectProps={{
-                inputProps: { 'aria-label': 'rows per page' },
+                inputProps: { "aria-label": "rows per page" },
                 native: true,
               }}
             />
