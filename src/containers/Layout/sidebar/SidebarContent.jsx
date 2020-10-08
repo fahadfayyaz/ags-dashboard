@@ -21,7 +21,7 @@ class SidebarContent extends Component {
     return (
       <div className="sidebar__content">
         <ul className="sidebar__block">
-          <SidebarLink
+          {/* <SidebarLink
             title="Dashboard Default"
             icon="home"
             route="/dashboard_default"
@@ -155,21 +155,21 @@ class SidebarContent extends Component {
               route="/ui/typography"
               onClick={this.hideSidebar}
             />
-          </SidebarCategory>
+          </SidebarCategory> */}
           <SidebarLink
             title="Mail Application"
             icon="envelope"
             route="/mail"
             onClick={this.hideSidebar}
           />
-          <SidebarLink
+          {/* <SidebarLink
             title="Chat Application"
             icon="bubble"
             route="/chat"
             onClick={this.hideSidebar}
-          />
+          /> */}
           <SidebarLink
-            title="Todo Application"
+            title="ADD JOB"
             icon="book"
             newLink
             route="/todo"
@@ -381,25 +381,25 @@ class SidebarContent extends Component {
               onClick={this.hideSidebar}
             />
           </SidebarCategory>
-          <SidebarCategory title="Multilevel Menu " icon="menu">
+          {/* <SidebarCategory title="Multilevel Menu " icon="menu">
             <SidebarLink title="Second Level Item" />
             <SidebarCategory title="Second Level Item">
               <SidebarLink title="Third Level Item" />
               <SidebarLink title="Third Level Item" />
             </SidebarCategory>
-          </SidebarCategory>
+          </SidebarCategory> */}
         </ul>
         <ul className="sidebar__block">
           <SidebarLink title="Log Out" icon="exit" route="/log_in" />
         </ul>
-        <ul className="sidebar__block">
+        {/* <ul className="sidebar__block">
           <SidebarLink
             title="Documentation"
             icon="text-align-justify"
             route="/documentation/introduction"
             onClick={this.hideSidebar}
           />
-        </ul>
+        </ul> */}
       </div>
     );
   }

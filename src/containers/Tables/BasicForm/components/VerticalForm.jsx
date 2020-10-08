@@ -1,12 +1,14 @@
-import React, { PureComponent } from "react";
-import { Card, CardBody, Col, Button, ButtonToolbar } from "reactstrap";
-import { Field, reduxForm } from "redux-form";
-import EyeIcon from "mdi-react/EyeIcon";
-import EmailIcon from "mdi-react/EmailIcon";
-import AccountSearchIcon from "mdi-react/AccountSearchIcon";
-import { withTranslation } from "react-i18next";
-import PropTypes from "prop-types";
-import renderFileInputField from "../../../../shared/components/form/FileInput";
+import React, { PureComponent } from 'react';
+import {
+  Card, CardBody, Col, Button, ButtonToolbar,
+} from 'reactstrap';
+import { Field, reduxForm } from 'redux-form';
+import EyeIcon from 'mdi-react/EyeIcon';
+import EmailIcon from 'mdi-react/EmailIcon';
+import AccountSearchIcon from 'mdi-react/AccountSearchIcon';
+import { withTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
+import renderFileInputField from '../../../../shared/components/form/FileInput';
 
 class VerticalForm extends PureComponent {
   static propTypes = {
@@ -24,8 +26,9 @@ class VerticalForm extends PureComponent {
 
   showPassword = (e) => {
     e.preventDefault();
-    this.setState((prevState) => ({ showPassword: !prevState.showPassword }));
+    this.setState(prevState => ({ showPassword: !prevState.showPassword }));
   };
+
 
   render() {
     const { handleSubmit, reset, t } = this.props;
@@ -36,9 +39,7 @@ class VerticalForm extends PureComponent {
         <Card>
           <CardBody>
             <div className="card__title">
-              <h5 className="bold-text">
-                {t("forms.basic_form.vertical_form")}
-              </h5>
+              <h5 className="bold-text">{t('forms.basic_form.vertical_form')}</h5>
               <h5 className="subhead">Labels are above fields</h5>
             </div>
             <form className="form" onSubmit={handleSubmit}>
@@ -82,17 +83,14 @@ class VerticalForm extends PureComponent {
                   <Field
                     name="password"
                     component="input"
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword ? 'text' : 'password'}
                     placeholder="Password"
                   />
                   <button
                     type="button"
-                    className={`form__form-group-button${
-                      showPassword ? " active" : ""
-                    }`}
-                    onClick={(e) => this.showPassword(e)}
-                  >
-                    <EyeIcon />
+                    className={`form__form-group-button${showPassword ? ' active' : ''}`}
+                    onClick={e => this.showPassword(e)}
+                  ><EyeIcon />
                   </button>
                 </div>
               </div>
@@ -125,15 +123,18 @@ class VerticalForm extends PureComponent {
                 </div>
               </div>
               <div className="form__form-group">
-                <span className="form__form-group-label">Add file</span>
+                <span className="form__form-group-label">
+                  Add file
+                </span>
                 <div className="form__form-group-field">
-                  <Field name="fileVertical" component={renderFileInputField} />
+                  <Field
+                    name="fileVertical"
+                    component={renderFileInputField}
+                  />
                 </div>
               </div>
               <ButtonToolbar className="form__button-toolbar">
-                <Button color="primary" type="submit">
-                  Submit
-                </Button>
+                <Button color="primary" type="submit">Submit</Button>
                 <Button type="button" onClick={reset}>
                   Cancel
                 </Button>
@@ -147,5 +148,5 @@ class VerticalForm extends PureComponent {
 }
 
 export default reduxForm({
-  form: "vertical_form", // a unique identifier for this form
-})(withTranslation("common")(VerticalForm));
+  form: 'vertical_form', // a unique identifier for this form
+})(withTranslation('common')(VerticalForm));

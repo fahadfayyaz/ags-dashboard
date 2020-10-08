@@ -1,14 +1,18 @@
-import React, { PureComponent } from "react";
-import { Card, CardBody, Col, Button, ButtonToolbar } from "reactstrap";
-import { Field, reduxForm } from "redux-form";
-import EyeIcon from "mdi-react/EyeIcon";
-import EmailIcon from "mdi-react/EmailIcon";
-import AccountSearchIcon from "mdi-react/AccountSearchIcon";
-import { withTranslation } from "react-i18next";
-import PropTypes from "prop-types";
-import renderFileInputField from "../../../../shared/components/form/FileInput";
+import React, { PureComponent } from 'react';
+import {
+  Card, CardBody, Col, Button, ButtonToolbar,
+} from 'reactstrap';
+import { Field, reduxForm } from 'redux-form';
+import EyeIcon from 'mdi-react/EyeIcon';
+import EmailIcon from 'mdi-react/EmailIcon';
+import AccountSearchIcon from 'mdi-react/AccountSearchIcon';
+import { withTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
+import renderFileInputField from '../../../../shared/components/form/FileInput';
+import renderSelectField from '../../../../shared/components/form/Select';
+import renderMultiSelectField from '../../../../shared/components/form/MultiSelect';
 
-class VerticalForm extends PureComponent {
+class HorizontalForm extends PureComponent {
   static propTypes = {
     t: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
@@ -24,7 +28,7 @@ class VerticalForm extends PureComponent {
 
   showPassword = (e) => {
     e.preventDefault();
-    this.setState((prevState) => ({ showPassword: !prevState.showPassword }));
+    this.setState(prevState => ({ showPassword: !prevState.showPassword }));
   };
 
   render() {
@@ -36,12 +40,10 @@ class VerticalForm extends PureComponent {
         <Card>
           <CardBody>
             <div className="card__title">
-              <h5 className="bold-text">
-                {t("forms.basic_form.vertical_form")}
-              </h5>
-              <h5 className="subhead">Labels are above fields</h5>
+              <h5 className="bold-text">{t('forms.basic_form.horizontal_form')}</h5>
+              <h5 className="subhead">Labels are left from fields</h5>
             </div>
-            <form className="form" onSubmit={handleSubmit}>
+            <form className="form form--horizontal" onSubmit={handleSubmit}>
               <div className="form__form-group">
                 <span className="form__form-group-label">Default Label</span>
                 <div className="form__form-group-field">
@@ -82,17 +84,14 @@ class VerticalForm extends PureComponent {
                   <Field
                     name="password"
                     component="input"
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword ? 'text' : 'password'}
                     placeholder="Password"
                   />
                   <button
                     type="button"
-                    className={`form__form-group-button${
-                      showPassword ? " active" : ""
-                    }`}
-                    onClick={(e) => this.showPassword(e)}
-                  >
-                    <EyeIcon />
+                    className={`form__form-group-button${showPassword ? ' active' : ''}`}
+                    onClick={e => this.showPassword(e)}
+                  ><EyeIcon />
                   </button>
                 </div>
               </div>
@@ -125,15 +124,66 @@ class VerticalForm extends PureComponent {
                 </div>
               </div>
               <div className="form__form-group">
-                <span className="form__form-group-label">Add file</span>
+                <span className="form__form-group-label">Field with description</span>
                 <div className="form__form-group-field">
-                  <Field name="fileVertical" component={renderFileInputField} />
+                  <Field
+                    name="descriptionInput"
+                    component="input"
+                    type="text"
+                  />
+                </div>
+                <span className="form__form-group-description">
+                  Zealously now pronounce existence add you instantly say offending.
+                </span>
+              </div>
+              <div className="form__form-group">
+                <span className="form__form-group-label">Dropdown</span>
+                <div className="form__form-group-field">
+                  <Field
+                    name="select"
+                    component={renderSelectField}
+                    options={[
+                      { value: 'one', label: 'One' },
+                      { value: 'two', label: 'Two' },
+                    ]}
+                  />
+                </div>
+              </div>
+              <div className="form__form-group">
+                <span className="form__form-group-label">Multiselect</span>
+                <div className="form__form-group-field">
+                  <Field
+                    name="multiSelect"
+                    component={renderMultiSelectField}
+                    options={[
+                      { value: 'one', label: 'One' },
+                      { value: 'two', label: 'Two' },
+                    ]}
+                  />
+                </div>
+              </div>
+              <div className="form__form-group">
+                <div className="form__form-group-field">
+                  <Field
+                    name="textarea"
+                    component="textarea"
+                    type="text"
+                  />
+                </div>
+              </div>
+              <div className="form__form-group">
+                <span className="form__form-group-label">
+                  Add file
+                </span>
+                <div className="form__form-group-field">
+                  <Field
+                    name="file"
+                    component={renderFileInputField}
+                  />
                 </div>
               </div>
               <ButtonToolbar className="form__button-toolbar">
-                <Button color="primary" type="submit">
-                  Submit
-                </Button>
+                <Button color="primary" type="submit">Submit</Button>
                 <Button type="button" onClick={reset}>
                   Cancel
                 </Button>
@@ -147,5 +197,5 @@ class VerticalForm extends PureComponent {
 }
 
 export default reduxForm({
-  form: "vertical_form", // a unique identifier for this form
-})(withTranslation("common")(VerticalForm));
+  form: 'horizontal_form', // a unique identifier for this form
+})(withTranslation('common')(HorizontalForm));

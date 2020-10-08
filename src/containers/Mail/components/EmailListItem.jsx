@@ -122,7 +122,8 @@ export default class EmailListItem extends PureComponent {
             <td onClick={onLetter}>{email.attach ? <PaperclipIcon /> : ""}</td>
             <td
               onClick={() => {
-                console.log(contact.id);
+				console.log(contact.id);
+				
                 //this.userId(contact);
               }}
               className="inbox__email-table-date"
