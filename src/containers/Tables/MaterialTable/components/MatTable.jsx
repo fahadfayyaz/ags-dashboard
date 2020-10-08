@@ -1,5 +1,20 @@
-import React, { PureComponent } from "react";
-import { Card, CardBody, Col, ButtonToolbar } from "reactstrap";
+import React, { PureComponent, useState } from "react";
+import {
+  Card,
+  CardBody,
+  Col,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  FormText,
+} from "reactstrap";
+import TextEditor from "../../../../shared/components/text-editor/TextEditor";
 import { Link } from "react-router-dom";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
@@ -12,7 +27,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import MatTableHead from "./MatTableHead";
 import MatTableToolbar from "./MatTableToolbar";
 import { db } from "../../../../config/firebase";
-import Form from "./Form";
+import { Editor } from "draft-js";
 
 //function createData(name, calories, fat, carbs, protein) {
 //  counter += 1;
@@ -55,6 +70,9 @@ export default class MatTable extends PureComponent {
     orderBy: "calories",
     key: "",
     selected: new Map([]),
+    show: false,
+    edit: {},
+
     data: [
       //  createData("Cupcake", 305, 3.7, 67, 4.3),
       //  createData("Donut", 452, 25.0, 51, 4.9),
@@ -89,7 +107,23 @@ export default class MatTable extends PureComponent {
       })
       .catch((error) => console.log(error));
   }
-
+  handleClose = () =>
+    this.setState({
+      show: false,
+    });
+  handleShow = (id, position, type, location, content) => {
+    console.log("clicked", id, position);
+    let edit = {
+      position: position,
+      type: type,
+      location: location,
+      content: content,
+    };
+    this.setState({
+      show: true,
+      edit: edit,
+    });
+  };
   handleRequestSort = (event, property) => {
     const orderBy = property;
     let order = "desc";
@@ -162,9 +196,43 @@ export default class MatTable extends PureComponent {
         console.error("Error removing document: ", error);
       });
   }
+  // Example() {
+  //   // const [show, setShow] = useState(false);
 
+  //   // const handleClose = () => setShow(false);
+  //   // const handleShow = () => setShow(true);
+
+  //   return (
+  //     <>
+  //       {console.log("log")}
+  //       <Modal show={show} onHide={handleClose}>
+  //         <Modal.Header closeButton>
+  //           <Modal.Title>Modal heading</Modal.Title>
+  //         </Modal.Header>
+  //         <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+  //         <Modal.Footer>
+  //           <Button variant="secondary" onClick={handleClose}>
+  //             Close
+  //           </Button>
+  //           <Button variant="primary" onClick={handleClose}>
+  //             Save Changes
+  //           </Button>
+  //         </Modal.Footer>
+  //       </Modal>
+  //     </>
+  //   );
+  // }
   render() {
-    const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
+    const {
+      data,
+      order,
+      orderBy,
+      selected,
+      rowsPerPage,
+      page,
+      show,
+    } = this.state;
+    const { buttonLabel, className } = this.props;
     const emptyRows =
       rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
     console.log("render data ", data);
@@ -236,9 +304,17 @@ export default class MatTable extends PureComponent {
                             />
                           </TableCell>
                           <TableCell className="material-table__cell material-table__cell-right">
-                            <Link to="/Form">
-                              <EditIcon />
-                            </Link>
+                            <EditIcon
+                              onClick={() =>
+                                this.handleShow(
+                                  d.id,
+                                  d.position,
+                                  d.type,
+                                  d.location,
+                                  d.content
+                                )
+                              }
+                            />
                           </TableCell>
                         </TableRow>
                       );
@@ -270,6 +346,64 @@ export default class MatTable extends PureComponent {
             />
           </CardBody>
         </Card>
+        <div>
+          <Modal isOpen={show} toggle={this.handleShow} className={className}>
+            <ModalHeader>Edit Job</ModalHeader>
+            <ModalBody>
+              <Form>
+                <FormGroup>
+                  <Label for="Position">Position</Label>
+                  <Input
+                    type="Text"
+                    name="Position"
+                    id="Position"
+                    placeholder="Position"
+                    value={this.state.edit.position}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="Type">Type</Label>
+                  <Input
+                    type="Text"
+                    name="Type"
+                    id="Type"
+                    placeholder="Type"
+                    value={this.state.edit.type}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="Type">Location</Label>
+                  <Input
+                    type="Text"
+                    name="Location"
+                    id="Location"
+                    placeholder="Location"
+                    value={this.state.edit.location}
+                  />
+                </FormGroup>
+
+                <FormGroup>
+                  <Label for="exampleText">Text Area</Label>
+                  {/* <Input
+                    type="textarea"
+                    name="text"
+                    id="exampleText"
+                    value={this.state.edit.content}
+                  /> */}
+                </FormGroup>
+                <CardBody>
+                  <TextEditor value={this.state.edit.content}></TextEditor>
+                </CardBody>
+                <Button>Submit</Button>
+              </Form>
+            </ModalBody>
+            <ModalFooter>
+              {/* <Button color="secondary" onClick={this.handleClose}>
+                Cancel
+              </Button> */}
+            </ModalFooter>
+          </Modal>
+        </div>
       </Col>
     );
   }

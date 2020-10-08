@@ -107,6 +107,7 @@ export default class EmailListItem extends PureComponent {
                 <b>{contact.service}</b>
               </Dotdotdot>
             </td>
+
             <td onClick={onLetter}>{email.attach ? <PaperclipIcon /> : ""}</td>
             <td onClick={onLetter} className="inbox__email-table-date">
               {moment(contact.createdAt.toDate()).calendar()}

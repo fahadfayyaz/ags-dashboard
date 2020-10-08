@@ -4,6 +4,21 @@ import PropTypes from "prop-types";
 import Dotdotdot from "react-dotdotdot";
 import classNames from "classnames";
 import moment from "moment";
+import {
+  Card,
+  CardBody,
+  Col,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  FormText,
+} from "reactstrap";
 import CheckIcon from "mdi-react/CheckIcon";
 import PaperclipIcon from "mdi-react/PaperclipIcon";
 import StarIcon from "mdi-react/StarIcon";
@@ -35,13 +50,15 @@ export default class EmailListItem extends PureComponent {
     this.state = {
       favorite: false,
       isChecked: false,
+      show: false,
+      edit: {},
     };
   }
   componentDidMount() {
     console.log("mounted");
 
     db.collection("roles")
-      .doc("9mOF2BUSIXBYSZZeRiCR")
+      .doc("BnXEODGN4HKXAtfvzKKK")
       .collection("applied")
       .orderBy("createdAt", "desc")
       .get()
@@ -55,6 +72,23 @@ export default class EmailListItem extends PureComponent {
       })
       .catch((error) => console.log(error));
   }
+  handleClose = () =>
+    this.setState({
+      show: false,
+    });
+  handleShow = (id, email, message, name, resumeRef) => {
+    console.log("clicked", id, email);
+    let edit = {
+      email: email,
+      message: message,
+      name: name,
+      resumeRef: resumeRef,
+    };
+    this.setState({
+      show: true,
+      edit: edit,
+    });
+  };
 
   onFavorite = (e) => {
     e.preventDefault();
@@ -68,7 +102,7 @@ export default class EmailListItem extends PureComponent {
 
   render() {
     const { email, onLetter, itemId } = this.props;
-    const { favorite, isChecked } = this.state;
+    const { favorite, isChecked, show, className, roles } = this.state;
     const itemClass = classNames({
       "inbox__email-list-item": true,
       "inbox__email-list-item--unread": email.unread,
@@ -79,7 +113,18 @@ export default class EmailListItem extends PureComponent {
     ) : (
       this.state.roles.map((role) => {
         return (
-          <tr className={itemClass}>
+          <tr
+            className={itemClass}
+            onClick={() =>
+              this.handleShow(
+                role.id,
+                role.email,
+                role.message,
+                role.name,
+                role.resumeRef
+              )
+            }
+          >
             <td>
               <label
                 htmlFor={role.id}
@@ -102,18 +147,41 @@ export default class EmailListItem extends PureComponent {
                 className={`inbox__favorite${favorite ? " active" : ""}`}
               />
             </td>
-            <td className="inbox__email-table-name" onClick={onLetter}>
-              {role.name}
-            </td>
-            <td onClick={onLetter} className="inbox__email-table-preview">
+            <td className="inbox__email-table-name">{role.name}</td>
+            <td className="inbox__email-table-preview">
               <Dotdotdot clamp={1}>
                 <b>{role.email}</b>
               </Dotdotdot>
             </td>
-            <td onClick={onLetter}>{email.attach ? <PaperclipIcon /> : ""}</td>
-            <td onClick={onLetter} className="inbox__email-table-date">
+            <td>{email.attach ? <PaperclipIcon /> : ""}</td>
+            <td className="inbox__email-table-date">
               {moment(role.createdAt.toDate()).calendar()}
             </td>
+            <div>
+              <Modal
+                isOpen={show}
+                toggle={this.handleShow}
+                className={className}
+              >
+                <ModalHeader>JOB Mail</ModalHeader>
+                <ModalBody>
+                  <div className="typography-message">
+                    <h4>
+                      <b>{this.state.edit.email} </b>
+                    </h4>
+                    <p>{this.state.edit.message}</p>
+                    <p>Best regards,</p>
+                    <p>{this.state.edit.name}</p>
+                    {this.state.edit.resumeRef}
+                  </div>
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="secondary" onClick={this.handleClose}>
+                    Cancel
+                  </Button>
+                </ModalFooter>
+              </Modal>
+            </div>
           </tr>
         );
       })
