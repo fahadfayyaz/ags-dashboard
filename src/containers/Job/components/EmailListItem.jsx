@@ -4,11 +4,27 @@ import PropTypes from "prop-types";
 import Dotdotdot from "react-dotdotdot";
 import classNames from "classnames";
 import moment from "moment";
+import {
+  Card,
+  CardBody,
+  Col,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  FormText,
+} from "reactstrap";
 import CheckIcon from "mdi-react/CheckIcon";
 import PaperclipIcon from "mdi-react/PaperclipIcon";
 import StarIcon from "mdi-react/StarIcon";
-import { db, auth } from "../../../config/firebase";
+import firebase, { db } from "../../../config/firebase";
 import { EmailProps } from "../../../shared/prop-types/EmailProps";
+import { Link } from "react-router-dom";
 
 export default class EmailListItem extends PureComponent {
   static propTypes = {
@@ -35,24 +51,45 @@ export default class EmailListItem extends PureComponent {
     this.state = {
       favorite: false,
       isChecked: false,
-      id: "",
+      show: false,
+      edit: {},
     };
   }
   componentDidMount() {
     console.log("mounted");
-    db.collection("contacts")
+
+    db.collection("roles")
+      .doc("BnXEODGN4HKXAtfvzKKK")
+      .collection("applied")
       .orderBy("createdAt", "desc")
       .get()
       .then((snapshot) => {
-        const contacts = [];
+        const roles = [];
         snapshot.forEach((doc) => {
           const data = doc.data();
-          contacts.push({ ...data, id: doc.id });
+          roles.push({ ...data, id: doc.id });
         });
-        this.setState({ contacts: contacts, loading: false });
+        this.setState({ roles: roles, loading: false });
       })
       .catch((error) => console.log(error));
   }
+  handleClose = () =>
+    this.setState({
+      show: false,
+    });
+  handleShow = (id, email, message, name, resumeRef) => {
+    console.log("clicked", id, email);
+    let edit = {
+      email: email,
+      message: message,
+      name: name,
+      resumeRef: resumeRef,
+    };
+    this.setState({
+      show: true,
+      edit: edit,
+    });
+  };
 
   onFavorite = (e) => {
     e.preventDefault();
@@ -63,39 +100,39 @@ export default class EmailListItem extends PureComponent {
     const { isChecked } = this.state;
     this.setState({ isChecked: !isChecked });
   };
-  userId = (contact) => {
-    console.log(contact);
-    //this.setState({ id });
-  };
+
   render() {
     const { email, onLetter, itemId } = this.props;
-    const { favorite, isChecked } = this.state;
+    const { favorite, isChecked, show, className, roles } = this.state;
     const itemClass = classNames({
       "inbox__email-list-item": true,
       "inbox__email-list-item--unread": email.unread,
     });
-    console.log("iddd", this.state.id);
-    return !this.state.contacts ? (
+
+    return !this.state.roles ? (
       <div />
     ) : (
-      this.state.contacts.map((contact) => {
+      this.state.roles.map((role) => {
         return (
           <tr
             className={itemClass}
-            //style={{ backgroundColor: "red" }}
-            onclick={(contact) => {
-              //  ev.stopropagation();
-              console.log(contact);
-              this.userId(contact);
-            }}
+            onClick={() =>
+              this.handleShow(
+                role.id,
+                role.email,
+                role.message,
+                role.name,
+                role.resumeRef
+              )
+            }
           >
             <td>
               <label
-                htmlFor={contact.id}
+                htmlFor={role.id}
                 className="checkbox-btn checkbox-btn--colored-click inbox__email-list-item-checkbox"
               >
                 <input
-                  id={contact.id}
+                  id={role.id}
                   className="checkbox-btn__checkbox"
                   type="checkbox"
                   checked={isChecked}
@@ -111,26 +148,47 @@ export default class EmailListItem extends PureComponent {
                 className={`inbox__favorite${favorite ? " active" : ""}`}
               />
             </td>
-            <td className="inbox__email-table-name" onClick={onLetter}>
-              {contact.name}
-            </td>
-            <td onClick={onLetter} className="inbox__email-table-preview">
+            <td className="inbox__email-table-name">{role.name}</td>
+            <td className="inbox__email-table-preview">
               <Dotdotdot clamp={1}>
-                <b>{contact.service}</b>
+                <b>{role.email}</b>
               </Dotdotdot>
             </td>
-
-            <td onClick={onLetter}>{email.attach ? <PaperclipIcon /> : ""}</td>
-            <td
-              onClick={() => {
-				console.log(contact.id);
-				
-                //this.userId(contact);
-              }}
-              className="inbox__email-table-date"
-            >
-              {moment(contact.createdAt.toDate()).calendar()}
+            <td>{email.attach ? <PaperclipIcon /> : ""}</td>
+            <td className="inbox__email-table-date">
+              {moment(role.createdAt.toDate()).calendar()}
             </td>
+            <div>
+              <Modal
+                isOpen={show}
+                toggle={this.handleShow}
+                className={className}
+              >
+                <ModalHeader>JOB Mail</ModalHeader>
+                <ModalBody>
+                  <div className="typography-message">
+                    <h4>
+                      <b>{this.state.edit.email} </b>
+                    </h4>
+                    <p>{this.state.edit.message}</p>
+                    <p>Best regards,</p>
+                    <p>{this.state.edit.name}</p>
+                    
+                  </div>
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="secondary" onClick={this.handleClose}>
+                    Cancel
+                  </Button>
+				  {/*<Link to= {this.state.edit.resumeRef} >*/}
+				  <Button color="primary" onClick={() => (window.location = `${this.state.edit.resumeRef}`,"_blank")}>
+					 
+                    Download CV
+                  </Button>
+				  
+                </ModalFooter>
+              </Modal>
+            </div>
           </tr>
         );
       })

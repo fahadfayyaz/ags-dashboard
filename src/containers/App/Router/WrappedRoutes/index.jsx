@@ -22,7 +22,8 @@ import MobileAppDashboard from "../../../Dashboards/MobileApp/index";
 import BookingDashboard from "../../../Dashboards/Booking/index";
 
 import Mail from "../../../Mail/index";
-
+import Job from "../../../Job/index";
+import Form from "../../../Tables/MaterialTable/components/Form";
 export default () => (
   <div>
     <Layout />
@@ -39,6 +40,8 @@ export default () => (
       <Route path="/dashboard_booking" component={BookingDashboard} />
       <Route path="/ui" component={UI} />
       <Route path="/mail" component={Mail} />
+      <Route path="/job" component={Job} />
+      <Route path="/form" component={Form} />
       <Route path="/chat" component={Chat} />
       <Route path="/todo" component={Todo} />
       <Route path="/forms" component={Forms} />

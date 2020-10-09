@@ -17,7 +17,7 @@ import { EmailsProps } from "../../../shared/prop-types/EmailProps";
 
 const mailboxes = [
   { icon: <InboxArrowDownIcon />, title: "Inbox", amount: 21 },
-  // { icon: <EmailIcon />, title: "Job Application" },
+  { icon: <EmailIcon />, title: "Job Application" },
   // { icon: <TooltipEditIcon />, title: "Drafts", amount: 2 },
   // { icon: <StarIcon />, title: "Tagged" },
   // { icon: <DeleteIcon />, title: "Deleted" },
@@ -125,7 +125,7 @@ export default class Inbox extends PureComponent {
         role="presentation"
       >
         <div className="inbox__mailbox-list">
-          {/* <Button
+          <Button
             color="primary"
             className="icon inbox__mailbox-list-btn"
             size="sm"
@@ -133,7 +133,7 @@ export default class Inbox extends PureComponent {
           >
             <PenIcon />
             ADD JOB ROLES
-          </Button> */}
+          </Button>
           {mailboxes.map((m, i) => (
             <button
               type="button"
