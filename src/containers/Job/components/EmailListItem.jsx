@@ -24,6 +24,7 @@ import PaperclipIcon from "mdi-react/PaperclipIcon";
 import StarIcon from "mdi-react/StarIcon";
 import firebase, { db } from "../../../config/firebase";
 import { EmailProps } from "../../../shared/prop-types/EmailProps";
+import { Link } from "react-router-dom";
 
 export default class EmailListItem extends PureComponent {
   static propTypes = {
@@ -102,7 +103,7 @@ export default class EmailListItem extends PureComponent {
 
   render() {
     const { email, onLetter, itemId } = this.props;
-    const { favorite, isChecked, show, className } = this.state;
+    const { favorite, isChecked, show, className, roles } = this.state;
     const itemClass = classNames({
       "inbox__email-list-item": true,
       "inbox__email-list-item--unread": email.unread,
@@ -172,12 +173,20 @@ export default class EmailListItem extends PureComponent {
                     <p>{this.state.edit.message}</p>
                     <p>Best regards,</p>
                     <p>{this.state.edit.name}</p>
-                    {this.state.edit.resumeRef}
                   </div>
                 </ModalBody>
                 <ModalFooter>
                   <Button color="secondary" onClick={this.handleClose}>
                     Cancel
+                  </Button>
+                  {/*<Link to= {this.state.edit.resumeRef} >*/}
+                  <Button
+                    color="primary"
+                    onClick={(e) =>
+                      (window.location = `${this.state.edit.resumeRef}`)
+                    }
+                  >
+                    Download CV
                   </Button>
                 </ModalFooter>
               </Modal>
