@@ -110,6 +110,13 @@ export default class MatTable extends PureComponent {
       })
       .catch((error) => console.log(error));
   }
+
+  onInputchange(event) {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+  }
+
   handleClose = () =>
     this.setState({
       show: false,
@@ -397,6 +404,7 @@ export default class MatTable extends PureComponent {
                     id="Location"
                     placeholder="Location"
                     value={this.state.edit.location}
+                    onChange={this.onInputchange.bind(this)}
                   />
                 </FormGroup>
 
@@ -419,14 +427,13 @@ export default class MatTable extends PureComponent {
                     onChange={this.handleChange}
                   ></TextEditor>
                 </CardBody>
-                <Button>Submit</Button>
+                <Button style={{ marginRight: "40px" }}>Submit</Button>
+                <Button color="secondary" onClick={this.handleClose}>
+                  Cancel
+                </Button>
               </Form>
             </ModalBody>
-            <ModalFooter>
-              {/* <Button color="secondary" onClick={this.handleClose}>
-                Cancel
-              </Button> */}
-            </ModalFooter>
+            <ModalFooter></ModalFooter>
           </Modal>
         </div>
       </Col>

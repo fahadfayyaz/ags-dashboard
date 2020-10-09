@@ -1,0 +1,9 @@
+.read {
+    background-color: white;
+    color: black;
+}
+
+.notread {
+    background-color: lightblue;
+    color: black;
+}
