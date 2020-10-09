@@ -102,7 +102,7 @@ export default class EmailListItem extends PureComponent {
 
   render() {
     const { email, onLetter, itemId } = this.props;
-    const { favorite, isChecked, show, className, roles } = this.state;
+    const { favorite, isChecked, show, className } = this.state;
     const itemClass = classNames({
       "inbox__email-list-item": true,
       "inbox__email-list-item--unread": email.unread,
