@@ -22,7 +22,7 @@ import {
 import CheckIcon from "mdi-react/CheckIcon";
 import PaperclipIcon from "mdi-react/PaperclipIcon";
 import StarIcon from "mdi-react/StarIcon";
-import firebase, { db } from "../../../config/firebase";
+import firestore, { db } from "../../../config/firebase";
 import { EmailProps } from "../../../shared/prop-types/EmailProps";
 import { Link } from "react-router-dom";
 
@@ -58,20 +58,45 @@ export default class EmailListItem extends PureComponent {
   componentDidMount() {
     console.log("mounted");
 
-    db.collection("roles")
-      .doc("BnXEODGN4HKXAtfvzKKK")
-      .collection("applied")
-      .orderBy("createdAt", "desc")
-      .get()
-      .then((snapshot) => {
+    // db.collection("roles").doc("kpkjHRKTIVvR34UibH6c").collection("applied")
+    //   .orderBy("createdAt", "desc")
+    //   .get()
+    //   .then((snapshot) => {
+    //     const roles = [];
+    //     snapshot.forEach((doc) => {
+    //       const data = doc.data();
+    //       roles.push({ ...data, id: doc.id });
+
+
+    //     });
+
+
+    //     this.setState({ roles: roles, loading: false });
+    //   })
+    //   .catch((error) => console.log(error));
+    
+   db.collection("roles").get().then(snapshot => {
+      snapshot.forEach((d) => {
+        
         const roles = [];
-        snapshot.forEach((doc) => {
-          const data = doc.data();
-          roles.push({ ...data, id: doc.id });
-        });
-        this.setState({ roles: roles, loading: false });
+        console.log("doc:", d)
+        
+      db.collection("roles").doc(d.id).collection("applied").get().then(snapshot => {
+          
+            snapshot.forEach((doc)=>{
+              // const roles = [];
+              console.log(snapshot)
+              const data = doc.data();
+              roles.push({ ...data, id: doc.id });
+
+            })
+            this.setState({ roles: roles, loading: false });
+          })     
+          .catch((error) => console.log(error));    
       })
-      .catch((error) => console.log(error));
+    })
+
+
   }
   handleClose = () =>
     this.setState({
