@@ -2,7 +2,23 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import Dotdotdot from "react-dotdotdot";
+import {
+  Card,
+  CardBody,
+  Col,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  FormText,
+} from "reactstrap";
 import classNames from "classnames";
+import "./style.css";
 import moment from "moment";
 import CheckIcon from "mdi-react/CheckIcon";
 import PaperclipIcon from "mdi-react/PaperclipIcon";
@@ -35,7 +51,9 @@ export default class EmailListItem extends PureComponent {
     this.state = {
       favorite: false,
       isChecked: false,
-      id: "",
+      show: false,
+      edit: {},
+      B_color: true,
     };
   }
   componentDidMount() {
@@ -53,7 +71,27 @@ export default class EmailListItem extends PureComponent {
       })
       .catch((error) => console.log(error));
   }
-
+  changeColor() {
+    this.setState({ B_color: !this.state.B_color });
+  }
+  handleClose = () =>
+    this.setState({
+      show: false,
+    });
+  handleShow = (id, email, message, name, service, time) => {
+    console.log("clicked", id, email);
+    let edit = {
+      email: email,
+      message: message,
+      name: name,
+      service: service,
+      time: time,
+    };
+    this.setState({
+      show: true,
+      edit: edit,
+    });
+  };
   onFavorite = (e) => {
     e.preventDefault();
     this.setState((prevState) => ({ favorite: !prevState.favorite }));
@@ -68,8 +106,9 @@ export default class EmailListItem extends PureComponent {
     //this.setState({ id });
   };
   render() {
+    let btn_class = this.state.B_color ? "notread" : "read";
     const { email, onLetter, itemId } = this.props;
-    const { favorite, isChecked } = this.state;
+    const { favorite, isChecked, show, className } = this.state;
     const itemClass = classNames({
       "inbox__email-list-item": true,
       "inbox__email-list-item--unread": email.unread,
@@ -82,12 +121,18 @@ export default class EmailListItem extends PureComponent {
         return (
           <tr
             className={itemClass}
-            //style={{ backgroundColor: "red" }}
-            onclick={(contact) => {
-              //  ev.stopropagation();
-              console.log(contact);
-              this.userId(contact);
-            }}
+            onClick={() =>
+              this.handleShow(
+                contact.id,
+                contact.email,
+                contact.message,
+                contact.name,
+                contact.service,
+                moment(contact.createdAt.toDate()).calendar(),
+
+                this.changeColor.bind(this)
+              )
+            }
           >
             <td>
               <label
@@ -111,24 +156,46 @@ export default class EmailListItem extends PureComponent {
                 className={`inbox__favorite${favorite ? " active" : ""}`}
               />
             </td>
-            <td className="inbox__email-table-name" onClick={onLetter}>
-              {contact.name}
-            </td>
-            <td onClick={onLetter} className="inbox__email-table-preview">
+            <td className="inbox__email-table-name">{contact.name}</td>
+            <td className="inbox__email-table-preview">
               <Dotdotdot clamp={1}>
                 <b>{contact.service}</b>
               </Dotdotdot>
             </td>
-            <td onClick={onLetter}>{email.attach ? <PaperclipIcon /> : ""}</td>
-            <td
-              onClick={() => {
-                console.log(contact.id);
-                //this.userId(contact);
-              }}
-              className="inbox__email-table-date"
-            >
+
+            <td>{email.attach ? <PaperclipIcon /> : ""}</td>
+            <td className="inbox__email-table-date">
               {moment(contact.createdAt.toDate()).calendar()}
             </td>
+
+            <div>
+              <Modal
+                isOpen={show}
+                toggle={this.handleShow}
+                className={className}
+              >
+                <ModalHeader>Dated: {this.state.edit.time}</ModalHeader>
+                <ModalBody>
+                  <div className="typography-message">
+                    <h4>
+                      <b>{this.state.edit.email} </b>
+                    </h4>
+                    <p>{this.state.edit.message}</p>
+                    <p>Best regards,</p>
+                    <p>{this.state.edit.name}</p>
+                  </div>
+                </ModalBody>
+                <ModalFooter>
+                  <Button
+                    color="secondary"
+                    style={{ backgroundColor: "lightBlue" }}
+                    onClick={this.handleClose}
+                  >
+                    Okay
+                  </Button>
+                </ModalFooter>
+              </Modal>
+            </div>
           </tr>
         );
       })

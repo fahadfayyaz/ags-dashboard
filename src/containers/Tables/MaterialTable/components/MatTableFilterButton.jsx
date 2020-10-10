@@ -1,9 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import FilterListIcon from 'mdi-react/FilterListIcon';
+import React from "react";
+import PropTypes from "prop-types";
+import IconButton from "@material-ui/core/IconButton";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+
+import FilterListIcon from "mdi-react/FilterListIcon";
 
 class MatTableFilterButton extends React.Component {
   static propTypes = {
@@ -22,7 +23,7 @@ class MatTableFilterButton extends React.Component {
     this.setState({ anchorEl: null });
   };
 
-  handleSort = property => (event) => {
+  handleSort = (property) => (event) => {
     const { onRequestSort } = this.props;
     onRequestSort(event, property);
     this.handleClose();
@@ -35,7 +36,7 @@ class MatTableFilterButton extends React.Component {
       <div>
         <IconButton
           className="material-table__toolbar-button"
-          aria-owns={anchorEl ? 'simple-menu' : null}
+          aria-owns={anchorEl ? "simple-menu" : null}
           aria-haspopup="true"
           onClick={this.handleClick}
         >
@@ -48,13 +49,26 @@ class MatTableFilterButton extends React.Component {
           onClose={this.handleClose}
           className="material-table__filter-menu"
         >
-          <MenuItem onClick={this.handleSort('name')} className="material-table__filter-menu-item">Name</MenuItem>
-          <MenuItem onClick={this.handleSort('calories')} className="material-table__filter-menu-item">
-            Calories
+          <MenuItem
+            onClick={this.handleSort("Position")}
+            className="material-table__filter-menu-item"
+          >
+            Position
           </MenuItem>
-          <MenuItem onClick={this.handleSort('fat')} className="material-table__filter-menu-item">Fat</MenuItem>
-          <MenuItem onClick={this.handleSort('carbs')} className="material-table__filter-menu-item">Carbs</MenuItem>
-          <MenuItem onClick={this.handleSort('protein')} className="material-table__filter-menu-item">Protein</MenuItem>
+          <MenuItem
+            onClick={this.handleSort("Type")}
+            className="material-table__filter-menu-item"
+          >
+            Type
+          </MenuItem>
+          <MenuItem
+            onClick={this.handleSort("location")}
+            className="material-table__filter-menu-item"
+          >
+            location
+          </MenuItem>
+          {/*<MenuItem onClick={this.handleSort('carbs')} className="material-table__filter-menu-item">Carbs</MenuItem>
+          <MenuItem onClick={this.handleSort('protein')} className="material-table__filter-menu-item">Protein</MenuItem>*/}
         </Menu>
       </div>
     );

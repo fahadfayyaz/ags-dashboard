@@ -157,9 +157,15 @@ class SidebarContent extends Component {
             />
           </SidebarCategory>
           <SidebarLink
-            title="Mail Application"
+            title="Contact mail"
             icon="envelope"
             route="/mail"
+            onClick={this.hideSidebar}
+          />
+          <SidebarLink
+            title="Job mail"
+            icon="envelope"
+            route="/job"
             onClick={this.hideSidebar}
           />
           <SidebarLink
@@ -169,7 +175,7 @@ class SidebarContent extends Component {
             onClick={this.hideSidebar}
           />
           <SidebarLink
-            title="Todo Application"
+            title="ADD JOB"
             icon="book"
             newLink
             route="/todo"

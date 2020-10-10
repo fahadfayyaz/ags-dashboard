@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import TodoItem from './TodoItem';
-import todoCard from '../types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames";
+import TodoItem from "./TodoItem";
+import todoCard from "../types";
 
 class TodoList extends Component {
   static propTypes = {
@@ -23,19 +23,14 @@ class TodoList extends Component {
     const { todos, actions, completed } = this.props;
 
     const todoListClass = classNames({
-      'todo__item-comleted': completed,
+      "todo__item-comleted": completed,
     });
 
-    return (
-      todos.map(todo => (
-        <div xs={12} key={todo.id} className={todoListClass}>
-          <TodoItem
-            todo={todo}
-            actions={actions}
-          />
-        </div>
-      ))
-    );
+    return todos.map((todo) => (
+      <div xs={12} key={todo.id} className={todoListClass}>
+        <TodoItem todo={todo} actions={actions} />
+      </div>
+    ));
   }
 }
 export default TodoList;
