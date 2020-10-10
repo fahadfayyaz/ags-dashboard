@@ -53,15 +53,14 @@ export default class EmailListItem extends PureComponent {
       isChecked: false,
       show: false,
       edit: {},
-      B_color: true,
+     
     };
   }
   componentDidMount() {
     console.log("mounted");
     db.collection("contacts")
       .orderBy("createdAt", "desc")
-      .get()
-      .then((snapshot) => {
+      .onSnapshot((snapshot) => {
         const contacts = [];
         snapshot.forEach((doc) => {
           const data = doc.data();
@@ -69,10 +68,13 @@ export default class EmailListItem extends PureComponent {
         });
         this.setState({ contacts: contacts, loading: false });
       })
-      .catch((error) => console.log(error));
+      // .catch((error) => console.log(error));
   }
+
+
+ 
   changeColor() {
-    this.setState({ B_color: !this.state.B_color });
+    // this.setState({ B_color: !this.state.B_color });
   }
   handleClose = () =>
     this.setState({
@@ -87,6 +89,7 @@ export default class EmailListItem extends PureComponent {
       service: service,
       time: time,
     };
+    db.collection("contacts").doc(id).update({readed:true})
     this.setState({
       show: true,
       edit: edit,
@@ -101,26 +104,23 @@ export default class EmailListItem extends PureComponent {
     const { isChecked } = this.state;
     this.setState({ isChecked: !isChecked });
   };
-  userId = (contact) => {
-    console.log(contact);
-    //this.setState({ id });
-  };
+
   render() {
-    let btn_class = this.state.B_color ? "notread" : "read";
+    // let btn_class = this.state.B_color ? "notread" : "read";
     const { email, onLetter, itemId } = this.props;
     const { favorite, isChecked, show, className } = this.state;
     const itemClass = classNames({
       "inbox__email-list-item": true,
       "inbox__email-list-item--unread": email.unread,
     });
-    console.log("iddd", this.state.id);
+
     return !this.state.contacts ? (
       <div />
     ) : (
       this.state.contacts.map((contact) => {
         return (
           <tr
-            className={itemClass}
+            className={`${itemClass} ${contact.readed ?  "read" : "notread"}`}
             onClick={() =>
               this.handleShow(
                 contact.id,
@@ -130,8 +130,9 @@ export default class EmailListItem extends PureComponent {
                 contact.service,
                 moment(contact.createdAt.toDate()).calendar(),
 
-                this.changeColor.bind(this)
-              )
+                
+                )
+
             }
           >
             <td>
@@ -187,9 +188,13 @@ export default class EmailListItem extends PureComponent {
                 </ModalBody>
                 <ModalFooter>
                   <Button
-                    color="secondary"
-                    style={{ backgroundColor: "lightBlue" }}
-                    onClick={this.handleClose}
+                    color="primary"
+                    style={{ marginRight: "100px" }}
+                    onClick={()=>{
+
+                      this.handleClose()
+                      this.changeColor(this)
+                    }}
                   >
                     Okay
                   </Button>
