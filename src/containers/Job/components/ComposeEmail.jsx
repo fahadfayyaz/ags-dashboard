@@ -30,7 +30,7 @@ const ComposeEmail = () => {
         position: position,
       })
       .then(() => {
-        alert("Message has been submitted");
+        alert("Successfully Added");
         setLoader(false);
       })
       .catch((error) => {
@@ -93,13 +93,19 @@ const ComposeEmail = () => {
       </div>
     </div> */}
         <div className="form__form-group" dir="ltr">
-          <Field
+          {/* <Field
             name="text"
             component="input"
             value={content}
             onChange={(e) => setContent(e.target.value)}
             required
-          />
+          /> */}
+
+
+           <TextEditor
+            editorState={content}
+            onChange={(e) => setContent(e.target.value)}
+            ></TextEditor>
         </div>
         {/* <div className="form__form-group">
       <Button

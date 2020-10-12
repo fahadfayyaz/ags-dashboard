@@ -76,9 +76,10 @@ export default class EmailListItem extends PureComponent {
     //   .catch((error) => console.log(error));
     
    db.collection("roles").get().then(snapshot => {
+    const roles = [];
       snapshot.forEach((d) => {
         
-        const roles = [];
+        this.handleShow()
         console.log("doc:", d)
         
       db.collection("roles").doc(d.id).collection("applied").get().then(snapshot => {
@@ -88,7 +89,7 @@ export default class EmailListItem extends PureComponent {
               console.log(snapshot)
               const data = doc.data();
               roles.push({ ...data, id: doc.id });
-
+             
             })
             this.setState({ roles: roles, loading: false });
           })     
