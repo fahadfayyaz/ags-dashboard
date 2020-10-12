@@ -135,6 +135,7 @@ export default class MatTable extends PureComponent {
       Location: location,
       Content: content,
     };
+    // db.collection("roles").doc(id).update({edit:true})
     this.setState({
       show: true,
       edit,

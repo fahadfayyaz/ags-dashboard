@@ -16,8 +16,8 @@ import InboxTable from "./InboxTable";
 import { EmailsProps } from "../../../shared/prop-types/EmailProps";
 
 const mailboxes = [
-  { icon: <InboxArrowDownIcon />, title: "Inbox", amount: 21 },
-  { icon: <EmailIcon />, title: "Job Application" },
+  { icon: <InboxArrowDownIcon />, title: "Job Applications", amount: 21 },
+  // { icon: <EmailIcon />, title: "Job Application" },
   // { icon: <TooltipEditIcon />, title: "Drafts", amount: 2 },
   // { icon: <StarIcon />, title: "Tagged" },
   // { icon: <DeleteIcon />, title: "Deleted" },
