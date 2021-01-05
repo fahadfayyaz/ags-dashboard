@@ -8,6 +8,10 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Alert, Button } from 'reactstrap';
 import renderCheckBoxField from '../form/CheckBox';
+// Firebase App (the core Firebase SDK) is always required and
+// must be listed before other Firebase SDKs
+import firebase from '../../../config/firebase'
+
 
 class LogInForm extends PureComponent {
   static propTypes = {
@@ -30,9 +34,19 @@ class LogInForm extends PureComponent {
     super();
     this.state = {
       showPassword: false,
+      username:'',
+      password: ""
     };
 
     this.showPassword = this.showPassword.bind(this);
+  }
+   // Make login and handle change function function 
+   login(e) {
+    e.preventDefault()
+    firebase.auth().signInWithEmailAndPassword(this.state.username,this.state.password).then((u)=> console.log(u)).catch((err)=> console.log(err));
+  }
+  handleChange(e){
+
   }
 
   showPassword(e) {
@@ -44,7 +58,7 @@ class LogInForm extends PureComponent {
     const {
       handleSubmit, errorMessage, errorMsg, fieldUser, typeFieldUser, form,
     } = this.props;
-    const { showPassword } = this.state;
+    const { showPassword,username,password } = this.state;
     return (
       <Form className="form login-form" onSubmit={handleSubmit}>
         <Alert
@@ -61,10 +75,12 @@ class LogInForm extends PureComponent {
               <AccountOutlineIcon />
             </div>
             <Field
+              value = {username}
               name="username"
               component="input"
               type={typeFieldUser}
               placeholder={fieldUser}
+              onChange={this.handleChange}
             />
           </div>
         </div>
@@ -75,9 +91,11 @@ class LogInForm extends PureComponent {
               <KeyVariantIcon />
             </div>
             <Field
+            value={password}
               name="password"
               component="input"
               type={showPassword ? 'text' : 'password'}
+              onChange={this.handleChange}
               placeholder="Password"
             />
             <button

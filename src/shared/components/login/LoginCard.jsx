@@ -35,8 +35,8 @@ const LoginCard = ({ changeIsOpenModalFireBase }) => {
   }
   // Make a method to check the authenticity, and also make state to check whether User is here or not
       const [user,setUser] = useState(null);
-      const [email,setEmail] =useState(null);
-      const [password,setPassword] =useState(null);
+      // const [email,setEmail] =useState(null);
+      // const [password,setPassword] =useState(null);
 
       function authListener(){
         firebase.auth().onAuthStateChanged((us)=> {
@@ -50,8 +50,7 @@ const LoginCard = ({ changeIsOpenModalFireBase }) => {
       }
         // Use effect for authentication 
         useEffect(() => authListener(),[])
-      // Make login function
-      
+     
 
   return (
     <div className="account__wrapper">
@@ -64,7 +63,9 @@ const LoginCard = ({ changeIsOpenModalFireBase }) => {
           </h3>
           <h4 className="account__subhead subhead">Start your business easily</h4>
         </div>
+        {/* to show the message whether it is logged in or not */}
         {user ? <h1> User Logged in </h1> : <h1> User not Logged in </h1> }
+        
         <LogInForm
           onSubmin
           form="log_in_form"
