@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import EyeIcon from 'mdi-react/EyeIcon';
 import KeyVariantIcon from 'mdi-react/KeyVariantIcon';
 import AccountOutlineIcon from 'mdi-react/AccountOutlineIcon';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Alert, Button } from 'reactstrap';
 import renderCheckBoxField from '../form/CheckBox';
@@ -35,30 +35,41 @@ class LogInForm extends PureComponent {
     this.state = {
       showPassword: false,
       username:'',
-      password: ""
+      password: "",
+      userLoggedIn : false
     };
-
+    this.handleChange = this.handleChange.bind(this);
+    this.login   = this.login.bind(this);
     this.showPassword = this.showPassword.bind(this);
   }
-   // Make login and handle change function function 
+   // Make login, onsubmit and handle change function function 
    login(e) {
     e.preventDefault()
-    firebase.auth().signInWithEmailAndPassword(this.state.username,this.state.password).then((u)=> console.log(u)).catch((err)=> console.log(err));
+    firebase.auth().signInWithEmailAndPassword(this.state.username,this.state.password).then(()=> {
+      this.setState({userLoggedIn: true})
+    setTimeout(()=>{ window.location.reload(true) } , 350)
+
+      
+    // return  <Redirect  to="/dashboard_default/" />
+    setTimeout(()=>{ this.setState({userLoggedIn: false}) } , 1000)
+  }).catch((err)=> console.log(err.message));
   }
   handleChange(e){
-
+   this.setState({ [e.target.name] : e.target.value })
   }
+    
 
   showPassword(e) {
     e.preventDefault();
     this.setState(prevState => ({ showPassword: !prevState.showPassword }));
   }
-
+  
   render() {
     const {
       handleSubmit, errorMessage, errorMsg, fieldUser, typeFieldUser, form,
     } = this.props;
-    const { showPassword,username,password } = this.state;
+    const { showPassword,username,password,userLoggedIn } = this.state;
+    console.log(userLoggedIn)
     return (
       <Form className="form login-form" onSubmit={handleSubmit}>
         <Alert
@@ -119,15 +130,26 @@ class LogInForm extends PureComponent {
           </div>
         </div>
         <div className="account__btns">
-          {
+
+          {/* testing button */}
+          
+          {/* {userLoggedIn ? <Link className="account__btn btn btn-primary" to="/dashboard_default">
+                  Sign In
+                </Link> : <Button className="account__btn" onClick={this.login} color="primary">Sign In</Button> } */}
+                
+                {/* {userLoggedIn ? <Redirect  to="/dashboard_default/" /> : <Button className="account__btn" onClick={this.login} color="primary">Sign In</Button> } */}
+
+                {userLoggedIn && <Redirect  to="/dashboard_default/" />}
+                <Button className="account__btn" onClick={this.login} color="primary">Sign In</Button>
+          {/* {
             form === 'modal_login'
-              ? <Button className="account__btn" submit="true" color="primary">Sign In</Button>
+              ? <Button className="account__btn" onClick={this.login} submit="true" color="primary">Sign In</Button>
               : (
                 <Link className="account__btn btn btn-primary" to="/dashboard_default">
                   Sign In
                 </Link>
               )
-          }
+          } */}
 
           <Link className="btn btn-outline-primary account__btn" to="/register">Create
             Account
