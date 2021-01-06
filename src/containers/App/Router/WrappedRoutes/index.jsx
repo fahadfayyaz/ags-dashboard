@@ -12,9 +12,7 @@ import Forms from "./Forms";
 import UI from "./UI";
 
 import Chat from "../../../Chat/index";
-import Todo from "../../../Todo/index";
 
-import BookingDashboard from "../../../Dashboards/Booking/index";
 
 import Mail from "../../../Mail/index";
 import Job from "../../../Job/index";
@@ -24,8 +22,6 @@ export default () => (
     <Layout />
     <div className="container__wrap">
       
-      <Route path="/dashboard_booking" component={BookingDashboard} />
-      <Route path="/todo" component={Todo} />
       {/* Do not delete from here  */}
       <Route path="/ui" component={UI} />
       <Route path="/mail" component={Mail} />
@@ -38,7 +34,7 @@ export default () => (
       <Route path="/maps" component={Maps} />
       <Route path="/default_pages" component={DefaultPages} />
       {/* to there */}
-      <Route path="/account" component={Account} />
+      {/* <Route path="/account" component={Account} /> */}
       <Route path="/e-commerce" component={ECommerce} />
       <Route path="/documentation" component={Documentation} />
     </div>
