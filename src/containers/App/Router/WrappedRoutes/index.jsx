@@ -3,7 +3,6 @@ import { Route } from "react-router-dom";
 import Layout from "../../../Layout/index";
 import Documentation from "./Documentation";
 import DefaultPages from "./DefaultPages";
-import Account from "./Account";
 import ECommerce from "./ECommerce";
 import Maps from "./Maps";
 import Charts from "./Charts";
@@ -34,7 +33,6 @@ export default () => (
       <Route path="/maps" component={Maps} />
       <Route path="/default_pages" component={DefaultPages} />
       {/* to there */}
-      {/* <Route path="/account" component={Account} /> */}
       <Route path="/e-commerce" component={ECommerce} />
       <Route path="/documentation" component={Documentation} />
     </div>
