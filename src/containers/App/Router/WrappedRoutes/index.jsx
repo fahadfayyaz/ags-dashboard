@@ -1,7 +1,6 @@
 import React from "react";
 import { Route } from "react-router-dom";
 import Layout from "../../../Layout/index";
-import Crypto from "./Crypto";
 import Documentation from "./Documentation";
 import DefaultPages from "./DefaultPages";
 import Account from "./Account";
@@ -15,7 +14,6 @@ import UI from "./UI";
 import Chat from "../../../Chat/index";
 import Todo from "../../../Todo/index";
 
-import FitnessDashboard from "../../../Dashboards/Fitness/index";
 import MobileAppDashboard from "../../../Dashboards/MobileApp/index";
 import BookingDashboard from "../../../Dashboards/Booking/index";
 
@@ -26,8 +24,6 @@ export default () => (
   <div>
     <Layout />
     <div className="container__wrap">
-      <Route path="/dashboard_fitness" component={FitnessDashboard} />
-      <Route path="/dashboard_crypto" component={Crypto} />
       <Route
         exact
         path="/dashboard_mobile_app"
