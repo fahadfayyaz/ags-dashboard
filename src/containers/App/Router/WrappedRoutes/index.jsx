@@ -14,7 +14,6 @@ import UI from "./UI";
 import Chat from "../../../Chat/index";
 import Todo from "../../../Todo/index";
 
-import MobileAppDashboard from "../../../Dashboards/MobileApp/index";
 import BookingDashboard from "../../../Dashboards/Booking/index";
 
 import Mail from "../../../Mail/index";
@@ -24,11 +23,7 @@ export default () => (
   <div>
     <Layout />
     <div className="container__wrap">
-      <Route
-        exact
-        path="/dashboard_mobile_app"
-        component={MobileAppDashboard}
-      />
+      
       <Route path="/dashboard_booking" component={BookingDashboard} />
       <Route path="/todo" component={Todo} />
       {/* Do not delete from here  */}
