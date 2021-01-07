@@ -83,11 +83,7 @@ class SidebarContent extends Component {
             onClick={this.hideSidebar}
           />
         </ul> */}
-<<<<<<< Updated upstream
-          {/* Do not delete from here  */}
-=======
         {/* Do not remove from here */}
->>>>>>> Stashed changes
         <ul className="sidebar__block">
           <SidebarCategory title="UI Elements" icon="diamond">
             <SidebarLink
@@ -296,14 +292,8 @@ class SidebarContent extends Component {
             />
           </SidebarCategory>
         </ul>
-<<<<<<< Updated upstream
-
-          {/* To there */}
-{/*           
-=======
         {/* To there */}
 {/*         
->>>>>>> Stashed changes
         <ul className="sidebar__block">
           <SidebarCategory title="Account" icon="user">
             <SidebarLink
