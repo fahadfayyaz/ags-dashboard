@@ -137,9 +137,13 @@ class LogInForm extends PureComponent {
                   Sign In
                 </Link> : <Button className="account__btn" onClick={this.login} color="primary">Sign In</Button> } */}
                 
-                {/* {userLoggedIn ? <Redirect  to="/dashboard_default/" /> : <Button className="account__btn" onClick={this.login} color="primary">Sign In</Button> } */}
+                {/* {userLoggedIn ? <Redirect  to="/easydev/mail/" /> : <Button className="account__btn" onClick={this.login} color="primary">Sign In</Button> } */}
 
+<<<<<<< Updated upstream
                 {userLoggedIn && <Redirect  to="/easydev/ui/alerts" />}
+=======
+                {userLoggedIn && <Redirect  to="/easydev/chat/" />}
+>>>>>>> Stashed changes
                 <Button className="account__btn" onClick={this.login} color="primary">Sign In</Button>
           {/* {
             form === 'modal_login'
