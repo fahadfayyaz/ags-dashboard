@@ -16,11 +16,11 @@ class SidebarContent extends Component {
   };
 
   render() {
-    const { changeToLight, changeToDark } = this.props;
+    // const { changeToLight, changeToDark } = this.props;
 
     return (
       <div className="sidebar__content">
-        <ul className="sidebar__block">
+        {/* <ul className="sidebar__block">
           <SidebarLink
             title="Dashboard Default"
             icon="home"
@@ -82,7 +82,8 @@ class SidebarContent extends Component {
             newLink
             onClick={this.hideSidebar}
           />
-        </ul>
+        </ul> */}
+          {/* Do not delete from here  */}
         <ul className="sidebar__block">
           <SidebarCategory title="UI Elements" icon="diamond">
             <SidebarLink
@@ -291,6 +292,9 @@ class SidebarContent extends Component {
             />
           </SidebarCategory>
         </ul>
+
+          {/* To there */}
+{/*           
         <ul className="sidebar__block">
           <SidebarCategory title="Account" icon="user">
             <SidebarLink
@@ -405,7 +409,7 @@ class SidebarContent extends Component {
             route="/documentation/introduction"
             onClick={this.hideSidebar}
           />
-        </ul>
+        </ul> */}
       </div>
     );
   }

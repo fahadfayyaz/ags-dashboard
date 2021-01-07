@@ -9,6 +9,8 @@ import Forms from "./Forms";
 import UI from "./UI";
 
 import Chat from "../../../Chat/index";
+import Todo from "../../../Todo/index";
+
 
 
 import Mail from "../../../Mail/index";
@@ -25,6 +27,7 @@ export default () => (
       <Route path="/job" component={Job} />
       <Route path="/form" component={Form} />
       <Route path="/chat" component={Chat} />
+      <Route path="/todo" component={Todo} />
       <Route path="/forms" component={Forms} />
       <Route path="/tables" component={Tables} />
       <Route path="/charts" component={Charts} />
