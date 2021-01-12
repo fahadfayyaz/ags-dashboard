@@ -23,6 +23,7 @@ export default class TopbarWithNavigation extends PureComponent {
           <div className="topbar__left">
             <TopbarSidebarButton changeMobileSidebarVisibility={changeMobileSidebarVisibility} />
             <Link className="topbar__logo" to="/dashboard_default" />
+            <span style={{ fontFamily: 'Snell Roundhand, cursive', fontSize: '150%', position: 'relative', left: '-18%', marginTop:"2.5%"  }}>Ashter Global Solution</span>
           </div>
           <TopbarNav />
           <div className="topbar__right">

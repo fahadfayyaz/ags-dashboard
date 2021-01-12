@@ -133,23 +133,11 @@ class LogInForm extends PureComponent {
 
           {/* testing button */}
           
-          {/* {userLoggedIn ? <Link className="account__btn btn btn-primary" to="/dashboard_default">
-                  Sign In
-                </Link> : <Button className="account__btn" onClick={this.login} color="primary">Sign In</Button> } */}
-                
-                {/* {userLoggedIn ? <Redirect  to="/easydev/mail/" /> : <Button className="account__btn" onClick={this.login} color="primary">Sign In</Button> } */}
+          
 
                 {userLoggedIn && <Redirect  to="/easydev/ui/alerts" />}
                 <Button className="account__btn" onClick={this.login} color="primary">Sign In</Button>
-          {/* {
-            form === 'modal_login'
-              ? <Button className="account__btn" onClick={this.login} submit="true" color="primary">Sign In</Button>
-              : (
-                <Link className="account__btn btn btn-primary" to="/dashboard_default">
-                  Sign In
-                </Link>
-              )
-          } */}
+          
 
           <Link className="btn btn-outline-primary account__btn" to="/register">Create
             Account
