@@ -119,7 +119,7 @@ class SidebarContent extends Component {
             route="/todo"
             onClick={this.hideSidebar}
           />
-          <SidebarCategory title="Forms" icon="file-add">
+          {/* <SidebarCategory title="Forms" icon="file-add">
             <SidebarLink
               title="Basic Form"
               route="/forms/basic_form"
@@ -175,10 +175,11 @@ class SidebarContent extends Component {
               route="/forms/wizard_form"
               onClick={this.hideSidebar}
             />
-          </SidebarCategory>
+          </SidebarCategory> */}
+          
           <SidebarLink
           icon="list"
-              title="Material table"
+              title="Job Available"
               newLink
               route="/tables/material_table"
               onClick={this.hideSidebar}

@@ -28,7 +28,7 @@ class Topbar extends PureComponent {
               changeSidebarVisibility={changeSidebarVisibility}
             />
             <Link className="topbar__logo" to="/dashboard_default" />
-            <span style={{ fontFamily: 'Snell Roundhand, cursive', fontSize: '150%', position: 'relative', left: '-18%', marginTop:"2.5%" }} >Ashtar Global Solution</span>
+            <span style={{ fontFamily: 'Snell Roundhand, cursive', fontSize: '150%', color:'#777', position: 'relative', left: '-18%', marginTop:"2.5%" }} >Ashtar Global Solution</span>
           </div>
           <div className="topbar__right">
             <TopbarSearch />

@@ -51,7 +51,7 @@ class Todo extends Component {
       <Container className="todo-app">
         <Row>
           <Col md={12}>
-            <h3 className="page-title">{t('todo_application.page_title')}</h3>
+            <h3 className="page-title">{t('Add jobs')}</h3>
           </Col>
         </Row>
         <Row>
