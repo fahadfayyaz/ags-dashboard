@@ -1,4 +1,5 @@
 import React, { PureComponent, useState } from "react";
+import "./style.css";
 import {
   Card,
   CardBody,
@@ -91,35 +92,36 @@ export default class MatTable extends PureComponent {
       //  createData("Oreo", 437, 18.0, 63, 4.0),
     ],
     page: 0,
-	rowsPerPage: 5,
-	content:""
-	
+    rowsPerPage: 5,
+    content: ""
+
   };
 
   componentDidMount() {
     console.log("mounted");
     db.collection("roles").onSnapshot((snapshot) => {
-        const roles = [];
-        snapshot.forEach((doc) => {
-          const data = doc.data();
-          roles.push({ ...data, id: doc.id });
-        })
-        this.setState({ data: roles, loading: false });
-        console.log(this.state.data);
+      const roles = [];
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        roles.push({ ...data, id: doc.id });
       })
-      
+      this.setState({ data: roles, loading: false });
+      console.log(this.state.data);
+    })
+
   }
 
   onInputchange = (event) => {
-	const value = event.target.value;
+    const value = event.target.value;
     this.setState({
-		edit:{...this.state.edit,
-		[event.target.name]: value,
-		
-	},
-			
-	});
-	console.log(this.state.edit)
+      edit: {
+        ...this.state.edit,
+        [event.target.name]: value,
+
+      },
+
+    });
+    console.log(this.state.edit)
   }
 
   handleClose = () =>
@@ -129,7 +131,7 @@ export default class MatTable extends PureComponent {
   handleShow = (id, position, type, location, content) => {
     console.log("clicked", id, position);
     let edit = {
-		Id:id,
+      Id: id,
       Position: position,
       Type: type,
       Location: location,
@@ -379,21 +381,21 @@ export default class MatTable extends PureComponent {
             />
           </CardBody>
         </Card>
-        <div>
-          <Modal isOpen={show} toggle={this.handleShow} className={className}>
+        <div classNames='EditBar' >
+          <Modal isOpen={show} toggle={this.handleShow} contentClassName='editText'>
             <ModalHeader>Edit Job</ModalHeader>
             <ModalBody>
-              <Form onSubmit={()=> {console.log("onsubmit",this.state.edit)}}>
-                <FormGroup>
+              <Form onSubmit={() => { console.log("onsubmit", this.state.edit) }}>
+                <FormGroup >
                   <Label for="Position">Position</Label>
                   <Input
                     type="Text"
                     name="Position"
                     id="Position"
                     placeholder="Position"
-					value={this.state.edit.Position}
+                    value={this.state.edit.Position}
                     onChange={this.onInputchange}
-					
+
                   />
                 </FormGroup>
                 <FormGroup>
@@ -403,9 +405,9 @@ export default class MatTable extends PureComponent {
                     name="Type"
                     id="Type"
                     placeholder="Type"
-					value={this.state.edit.Type}
+                    value={this.state.edit.Type}
                     onChange={this.onInputchange}
-					
+
                   />
                 </FormGroup>
                 <FormGroup>
@@ -439,15 +441,15 @@ export default class MatTable extends PureComponent {
                     onChange={this.handleChange}
                   ></TextEditor>
                 </CardBody>
-                <Button style={{ marginRight: "40px" }} onClick={()=>{
-					db.collection("roles").doc(this.state.edit.Id).update({
-						location:this.state.edit.Location,
-						position: this.state.edit.Position,
-						type:this.state.edit.Type
-					}).then(this.handleClose)
-					
-					
-				}}>Submit</Button>
+                <Button style={{ marginRight: "40px" }} onClick={() => {
+                  db.collection("roles").doc(this.state.edit.Id).update({
+                    location: this.state.edit.Location,
+                    position: this.state.edit.Position,
+                    type: this.state.edit.Type
+                  }).then(this.handleClose)
+
+
+                }}>Submit</Button>
                 <Button color="secondary" onClick={this.handleClose}>
                   Cancel
                 </Button>

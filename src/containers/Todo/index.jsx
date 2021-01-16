@@ -30,8 +30,10 @@ class Todo extends Component {
     this.state = {
       incompleteTodos: props.todos.filter(todo => !todo.completed),
       completedTodos: props.todos.filter(todo => todo.completed),
+      showForm: false,
     };
   }
+  
 
   componentWillReceiveProps(nextProps) {
     this.setState({
@@ -51,9 +53,14 @@ class Todo extends Component {
       <Container className="todo-app">
         <Row>
           <Col md={12}>
-            <h3 className="page-title">{t('Add jobs')}</h3>
+            <div style={{display:'flex'}}>
+            <h3 className="page-title">{t('Add jobs')}</h3> 
+
+            </div>
           </Col>
         </Row>
+        
+        <div>
         <Row>
           <Col md={9} xl={10}>
             <TodoList actions={actions} todos={incompleteTodos} />
@@ -75,6 +82,7 @@ class Todo extends Component {
             />
           </Col>
         </Row>
+        </div>
       </Container>
     );
   }

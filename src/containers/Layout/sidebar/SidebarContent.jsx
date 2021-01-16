@@ -119,6 +119,13 @@ class SidebarContent extends Component {
             route="/todo"
             onClick={this.hideSidebar}
           />
+          
+          <SidebarLink
+              icon="file-add"
+              title="Placement"
+              route="/forms/form_validation"
+              onClick={this.hideSidebar}
+            />
           {/* <SidebarCategory title="Forms" icon="file-add">
             <SidebarLink
               title="Basic Form"

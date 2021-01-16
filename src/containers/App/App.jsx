@@ -20,6 +20,8 @@ import Auth0Provider from "../../shared/components/auth/withAuth0";
 import Loading from "../../shared/components/Loading";
 import auth0Config from "../../config/auth0";
 
+
+
 i18next.init(i18nextConfig);
 
 const ThemeComponent = ({ children, themeName }) => {

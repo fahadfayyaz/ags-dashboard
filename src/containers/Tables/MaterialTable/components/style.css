@@ -1,0 +1,9 @@
+    .editText {
+        max-width: 70vw;
+       
+        min-width: 45vw;
+    }
+
+    .EditBar {
+        max-width: 60%;
+    }
