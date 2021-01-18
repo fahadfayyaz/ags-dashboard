@@ -75,6 +75,12 @@ export default class MatTable extends PureComponent {
     selected: new Map([]),
     show: false,
     edit: {},
+    // now start working on add button
+    add: {},
+    showAdd: false,
+    addContent: '',
+
+    // between this
 
     data: [
       //  createData("Cupcake", 305, 3.7, 67, 4.3),
@@ -110,7 +116,7 @@ export default class MatTable extends PureComponent {
     })
 
   }
-
+  // For Edit
   onInputchange = (event) => {
     const value = event.target.value;
     this.setState({
@@ -124,10 +130,38 @@ export default class MatTable extends PureComponent {
     console.log(this.state.edit)
   }
 
+  // For Add Button
+  addInputchange = (event) => {
+    const value = event.target.value;
+    this.setState({
+      add: {
+        ...this.state.add,
+        [event.target.name]: value,
+
+      },
+
+    }, () => {
+      console.log(this.state.add)
+    });
+  }
+
+
+  // for edit
+
   handleClose = () =>
     this.setState({
       show: false,
     });
+
+  // for add
+
+  addHandleClose = () =>
+    this.setState({
+      showAdd: false,
+    });
+
+  // for Edit
+
   handleShow = (id, position, type, location, content) => {
     console.log("clicked", id, position);
     let edit = {
@@ -143,6 +177,26 @@ export default class MatTable extends PureComponent {
       edit,
     });
   };
+
+  // for AdC button
+
+  handleShowAddButton = (id, position, type, location, content) => {
+    console.log("clicked", id, position);
+    let add = {
+      Id: id,
+      Position: position,
+      Type: type,
+      Location: location,
+      Content: content,
+    };
+    // db.collection("roles").doc(id).update({edit:true})
+    this.setState({
+      showAdd: true,
+      add,
+    });
+  };
+
+
   handleRequestSort = (event, property) => {
     const orderBy = property;
     let order = "desc";
@@ -241,6 +295,8 @@ export default class MatTable extends PureComponent {
   //     </>
   //   );
   // }
+
+  // Edit button
   handleChange = (content) => {
     this.setState({
       edit: {
@@ -249,6 +305,17 @@ export default class MatTable extends PureComponent {
       },
     });
     console.log("render data ", this.state.edit.content);
+  };
+
+  // ADD BUTTON
+  addhandleChange = (addContent) => {
+    this.setState({
+      add: {
+        ...this.state.add,
+        addContent,
+      },
+    });
+    console.log("render data ", this.state.add.addContent);
   };
 
   //  onEditorStateChange: Function = (editorState) => {
@@ -277,7 +344,8 @@ export default class MatTable extends PureComponent {
         <Card>
           <CardBody>
             <div className="card__title">
-              <h5 className="bold-text">Material table</h5>
+              <h5 className="bold-text" style={{ fontSize: 28 }}>Add Jobs <img onClick={this.handleShowAddButton.bind(this)} style={{ width: '40px', marginLeft: '1%' }} alt='add'
+                src='https://www.pngfind.com/pngs/m/673-6732463_transparent-new-icon-png-add-info-icon-png.png' /></h5>
             </div>
             <MatTableToolbar
               numSelected={[...selected].filter((el) => el[1]).length}
@@ -304,13 +372,13 @@ export default class MatTable extends PureComponent {
                         <TableRow
                           className="material-table__row"
                           role="checkbox"
-                          onClick={(event) => this.handleClick(event, d.id)}
                           aria-checked={isSelected}
                           tabIndex={-1}
                           key={d.id}
-                          selected={isSelected}
+                        // selected={isSelected}
                         >
                           <TableCell
+                            onClick={(event) => this.handleClick(event, d.id)}
                             className="material-table__cell"
                             padding="checkbox"
                           >
@@ -320,6 +388,7 @@ export default class MatTable extends PureComponent {
                             />
                           </TableCell>
                           <TableCell
+                            onClick={(event) => this.handleClick(event, d.id)}
                             className="material-table__cell material-table__cell-right"
                             component="th"
                             scope="row"
@@ -327,10 +396,12 @@ export default class MatTable extends PureComponent {
                           >
                             {d.position}
                           </TableCell>
-                          <TableCell className="material-table__cell material-table__cell-right">
+                          <TableCell onClick={(event) => this.handleClick(event, d.id)}
+                            className="material-table__cell material-table__cell-right">
                             {d.type}
                           </TableCell>
-                          <TableCell className="material-table__cell material-table__cell-right">
+                          <TableCell onClick={(event) => this.handleClick(event, d.id)}
+                            className="material-table__cell material-table__cell-right">
                             {d.location}
                           </TableCell>
                           <TableCell className="material-table__cell material-table__cell-right">
@@ -381,6 +452,7 @@ export default class MatTable extends PureComponent {
             />
           </CardBody>
         </Card>
+        {/* For edit button */}
         <div classNames='EditBar' >
           <Modal isOpen={show} toggle={this.handleShow} contentClassName='editText'>
             <ModalHeader>Edit Job</ModalHeader>
@@ -451,6 +523,88 @@ export default class MatTable extends PureComponent {
 
                 }}>Submit</Button>
                 <Button color="secondary" onClick={this.handleClose}>
+                  Cancel
+                </Button>
+              </Form>
+            </ModalBody>
+            <ModalFooter></ModalFooter>
+          </Modal>
+        </div>
+
+        {/* For Add Button */}
+        <div  >
+          <Modal isOpen={this.state.showAdd} toggle={this.handleShowAddButton} contentClassName='editText'>
+            <ModalHeader>Add Job</ModalHeader>
+            <ModalBody>
+              <Form onSubmit={() => { console.log("onsubmit", this.state.add) }}>
+                <FormGroup >
+                  <Label for="Position">Position</Label>
+                  <Input
+                    type="Text"
+                    name="Position"
+                    id="Position"
+                    placeholder="Position"
+                    value={this.state.add.Position}
+                    onChange={this.addInputchange}
+
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="Type">Type</Label>
+                  <Input
+                    type="Text"
+                    name="Type"
+                    id="Type"
+                    placeholder="Type"
+                    value={this.state.add.Type}
+                    onChange={this.addInputchange}
+
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="Type">Location</Label>
+                  <Input
+                    type="Text"
+                    name="Location"
+                    id="Location"
+                    placeholder="Location"
+                    value={this.state.add.Location}
+                    onChange={this.addInputchange}
+                  />
+                </FormGroup>
+
+                <FormGroup>
+                  <Label for="exampleText">Text Area</Label>
+                  {/* <Input
+                    type="textarea"
+                    name="text"
+                    id="exampleTex, () => {
+                      value={this.state.edit.content}
+                    }t"
+                  /> */}
+                </FormGroup>
+                <CardBody>
+                  {/*<Editor editorState={editorState}
+                  wrapperClassName="demo-wrapper" editorClassName="demo-editor"
+                  onEditorStateChange={this.onEditorStateChange}
+                  />*/}
+                  <TextEditor
+                    editorState={this.state.add.content}
+                    onChange={this.addhandleChange}
+                  ></TextEditor>
+                </CardBody>
+                <Button style={{ marginRight: "40px" }} onClick={() => {
+                  db.collection("roles").add({
+                    location: this.state.add.Location,
+                    position: this.state.add.Position,
+                    type: this.state.add.Type
+                  }).then(this.addHandleClose)
+                  console.log(this.state.add.Location + ' Location')
+                  console.log(this.state.add.Position + ' Position')
+                  console.log(this.state.add.Type + ' Type')
+
+                }}>Submit</Button>
+                <Button color="secondary" onClick={this.addHandleClose}>
                   Cancel
                 </Button>
               </Form>
